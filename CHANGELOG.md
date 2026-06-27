@@ -15,8 +15,12 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   total instead of whole hours only, matching what the LG app displays.
   `Bd[12]/Bd[13]` mirror the same values in observed captures and likely
   carry the originally committed reservation, pending confirmation.
-- The `reservation` select still exposes whole hours, matching the LG
-  protocol's whole-hour-only set command (`F0 26`).
+- **Removed** the `reservation` (`Delayed end`) sensor. It was read-only,
+  whole-hour granularity (`"18h"` while the dryer was at `17h 55m`), and
+  fully redundant with `run_state == "Delayed Start"` (the on/off signal)
+  and `cycle_end_time` (the minute-accurate timestamp). The `RESERVATION`
+  map is retained internally — the `start` button's JSON payload still
+  accepts `reservation: "4h"` for setting the delay at cycle launch.
 
 ## [1.0.4] — 2026-06-27
 

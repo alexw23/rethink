@@ -53,11 +53,6 @@ const SAMPLE_REMOTE_START = buf(
     'AA3830EC001900000000000000000000000000000000000000000000000000001901000000000600000000000000000001000000000000000000DBBB',
 )
 
-// Reservation 4h (Bd[10] = 4)
-const SAMPLE_RESERVATION = buf(
-    'AA3830EC001900000000000000000000000000000000000000000000000000001901000000000600000000040000000000000000000000000000C4BB',
-)
-
 // Real capture from a live dryer: Mixed Fabric (cycle=0x19), initial 1h50m,
 // Delayed Start with 17h55m remaining. Bd[10]=0x11=17, Bd[11]=0x37=55.
 // Bd[12]=0x11, Bd[13]=0x37 mirror the same values.
@@ -111,7 +106,6 @@ describe(MODEL_ID, () => {
             'dry_level',
             'eco_hybrid',
             'anti_crease',
-            'reservation',
             'start',
             'pause',
             'ping',
@@ -234,12 +228,6 @@ describe(MODEL_ID, () => {
         assert.equal(ha.devices[DEVICE_ID].properties.remote_start, 'ON')
     })
 
-    test('reservation decoded from Bd[10]', () => {
-        const { ha, thinq } = makeDevice()
-        thinq.emit('data', SAMPLE_RESERVATION)
-        assert.equal(ha.devices[DEVICE_ID].properties.reservation, '4h')
-    })
-
     // ── Delayed Start overlay ─────────────────────────────────────────────────
 
     test('run_state options include Delayed Start', () => {
@@ -277,10 +265,8 @@ describe(MODEL_ID, () => {
         thinq.emit('data', SAMPLE_DELAYED_17H55M)
         const props = ha.devices[DEVICE_ID].properties
 
-        // run_state overlay applied
+        // run_state overlay applied — this is now the canonical "is delayed?" signal
         assert.equal(props.run_state, 'Delayed Start')
-        // discrete reservation select still reads whole-hour Bd[10]
-        assert.equal(props.reservation, '17h')
         // initial_time decoded from Bd[3..4] = 1h50m
         assert.equal(props.initial_time, 110)
 

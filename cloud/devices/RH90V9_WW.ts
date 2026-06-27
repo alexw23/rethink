@@ -369,16 +369,6 @@ export default class Device extends AABBDevice {
                         icon: 'mdi:iron-outline',
                         optimistic: false,
                     },
-                    reservation: {
-                        platform: 'sensor',
-                        unique_id: '$deviceid-reservation',
-                        state_topic: '$this/reservation',
-                        name: 'Delayed end',
-                        icon: 'mdi:clock-end',
-                        device_class: 'enum',
-                        options: Object.values(RESERVATION),
-                    },
-
                     // ── Actions ──────────────────────────────────────────────
                     // start accepts an optional JSON payload:
                     //   {"cycle":"Mixed Fabric","dry_level":"Cupboard Dry","eco_hybrid":"Time",
@@ -653,7 +643,6 @@ export default class Device extends AABBDevice {
         this.publishProperty('dry_level', DRY_LEVELS[dryLevel] ?? `unknown (${dryLevel})`)
         this.publishProperty('eco_hybrid', ECO_HYBRID[ecoHybrid] ?? `unknown (${ecoHybrid})`)
         this.publishProperty('anti_crease', antiCrease ? 'ON' : 'OFF')
-        this.publishProperty('reservation', RESERVATION[reservation] ?? 'Off')
     }
 
     // ── F0 25 SmartCourse select — used as idle safety timer reset ────────────
