@@ -3,7 +3,25 @@
 All notable changes to this project are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [1.1.0] — 2026-06-28
+
+### ⚠️ Breaking — upgrade procedure
+
+Entity layout for the LG Dryer (RH90V9_WW) changed in this release. To
+avoid stale/duplicated entities in Home Assistant:
+
+1. **Stop the Rethink add-on.**
+2. **Delete the dryer device from Home Assistant's MQTT integration**
+   (Settings → Devices & Services → MQTT → device → ⋮ → Delete). This
+   clears retained discovery messages for the removed/renamed entities.
+3. **Start the Rethink add-on.** The device will be re-published with
+   the new entity layout. Any automations referencing removed entities
+   (see below) must be updated.
+
+This dance is needed because MQTT Discovery messages are retained on
+the broker; removing a sensor in code does not by itself unpublish the
+existing retained config. (Yes, a native HA integration would handle
+this transparently — see the project README for context.)
 
 ### LG Dryer (RH90V9_WW)
 
