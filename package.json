@@ -32,6 +32,6 @@
     "test": "node --import tsx --test --test-reporter=spec $(find tests -name '*.test.ts')"
   },
   "simple-git-hooks": {
-    "pre-commit": "npx pretty-quick --staged"
+    "pre-commit": "node scripts/sync-changelog.mjs && npx pretty-quick --staged"
   }
 }
