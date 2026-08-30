@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [1.2.0] — 2026-08-30
 
 Merged upstream `anszom/rethink` again, bringing a batch of new device
 support, a config port refactor, and various robustness fixes.
